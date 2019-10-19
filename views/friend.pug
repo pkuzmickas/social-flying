@@ -1,7 +1,8 @@
 extends layout
 
 block content
-  h1 #{name} #{phone}
+  h1 #{name} Flights
+  p.lead (#{phone}) (p.kuzmikas@gmail.com)
   hr
   .table-responsive
   table.table.table-hover
@@ -14,6 +15,7 @@ block content
         th Departure
         th Arrival
         th
+    tbody
       each user in data
         tr
           td #{user.flightRef}

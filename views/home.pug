@@ -16,19 +16,30 @@ block content
             | Sign in with Google
   else
     h1 Friends
-    p.lead Friends who are using the Social flying app
+    p.lead Friends who are using the Social Flying app
     hr
     .table-responsive
     table.table.table-hover
       thead.thead-dark
-        tbody
-          each val in users
-            tr
-              td
-                img(src=val.img_url)
-              td.list_name
-                a(href='/#' + val.id)
-                  p #{val.name}
+        tr
+          th.list_name 
+          th.list_name Name
+          th.list_name Phone
+          th.list_name Email
+      tbody
+        each val in users
+          tr
+            td
+              img(src=val.photo)
+            td.list_name
+              a(href='/#')
+                p #{val.name}
+            td.list_name
+              a(href='/#')
+                p #{val.phone}
+            td.list_name
+              a(href='/#')
+                p #{val.email}   
 
     //ul
     //  each val in #{users}
