@@ -775,40 +775,84 @@ exports.getGoogleDrive = (req, res) => {
 
 exports.getEvents = (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'google');
-
+  
   const authObj = new google.auth.OAuth2({
-    // access_type: 'offline'
+    access_type: 'offline'
   });
 
   authObj.setCredentials({
     access_token: token.accessToken
   });
+  const calendar = google.calendar({version:'v3', auth: authObj});
 
-  const calendar = google.calendar({version:'v3', authObj});
-  console.log(calendar);
-  // calendar.events.list({
-  //   calendarId: 'primary',
-  //   timeMin: (new Date()).toISOString(),
-  //   maxResults: 10,
-  //   singleEvents: true,
-  //   orderBy: 'startTime',
-  // }, (err, res) => {
-  //   if (err) return console.log('The API returned an error: ' + err);
-  //   const events = res.data.items;
-  //   if (events.length) {
-  //     console.log('Upcoming 10 events:');
-  //     events.map((event, i) => {
-  //       const start = event.start.dateTime || event.start.date;
-  //       console.log(`${start} - ${event.summary}`);
-  //     });
-  //   } else {
-  //     console.log('No upcoming events found.');
-  //   }
-  //   res.render('api/calendar', {
-  //     title: 'Google Calendar API',
-  //     events
-  //   });
-  // });
+  const pugRes = res;
+  calendar.events.list({
+    calendarId: 'primary',
+    timeMin: (new Date('2019-08-12 12:00:00')).toISOString(),
+    maxResults: 10,
+    singleEvents: true,
+    orderBy: 'startTime',
+  }, (err, res) => {
+    if (err) return console.log('The API returned an error: ' + err);
+    let events = res.data.items;
+    if (events.length) {
+      console.log('Upcoming 10 events:');
+      events.map((event, i) => {
+        const start = event.start.dateTime || event.start.date;
+        console.log(`${start} - ${event.summary}`);
+      });
+      //customize the events
+      console.log(events[0]);
+      let newEvs = [];
+      //checks for flights
+      events.forEach(ev => {
+        let splitSummary = ev.summary.split(' ');
+        if(splitSummary[0]==='Flight') {
+          let flightRef = ev.summary.split(/[()]+/).filter(function(e) { return e; })[1];
+          let from = ev.location.split(' ')[0];
+          let to = splitSummary[2]; // will fail with two piece names (New York will show only New)
+          let date = new Date(ev.start.dateTime).toDateString();
+          let departure = new Date(ev.start.dateTime).toTimeString();
+          let arrival = new Date(ev.end.dateTime).toTimeString();
+          let link = 'skyscannerNeedAPI';
+          newEvs.push({
+            flightRef,
+            from,
+            to,
+            date,
+            departure,
+            arrival,
+            link
+          });
+        }
+      });      
+
+
+      // UNCOMMENT THIS IF U WANT FLIGHTS ONLY
+      // if(newEvs.length>0)
+      // events = newEvs;
+      //end customizing
+
+
+      pugRes.render('api/calendar', {
+        title: 'Google Calendar API',
+        events
+      });
+
+      // UNCOMMENT THIS IF U WANT FLIGHTS ONLY
+      // pugRes.render('friend', {
+      //   name: 'Paulius Kuzmickas',
+      //   phone: '+447968086419',
+      //   data: events
+      // });
+
+      
+    } else {
+      console.log('No upcoming events found.');
+    }
+    
+  });
+  
 };
 
 exports.getGoogleSheets = (req, res) => {

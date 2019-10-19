@@ -5,7 +5,7 @@ block content
   .pb-2.mt-2.mb-4.border-bottom
     h2
       i.fab.fa-google.fa-sm
-      | Google Calendar API
+      | #{title}
 
   .btn-group.d-flex(role='group')
     a.btn.btn-primary(href='https://developers.google.com/drive/api/v3/quickstart/nodejs', target='_blank').w-100
@@ -18,9 +18,11 @@ block content
   br
   .pb-2.mt-2.mb-4.border-bottom
     h4
-      | The list of files at the root of your Google Drive
+      | The list of files at the root of your #{title}
+    
     for event in events
-      li=event
+      if(event.summary.split(' ')[0]=='Flight')
+      li=event.summary
         //- img(src=file.iconLink)
         //- | 
         //- a(href=file.webViewLink, target="_blank")
