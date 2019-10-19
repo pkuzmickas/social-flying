@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1 Paulius Kuzmickas (+447968086418)
+  h1 #{name} #{phone}
   hr
   .table-responsive
   table.table.table-hover
@@ -13,33 +13,14 @@ block content
         th Date
         th Departure
         th Arrival
-      tbody
-      tr
-        td FR2885
-        td Kaunas
-        td Edinburgh
-        td Tue, 13 Aug 19
-        td 13:15
-        td 14:05
-      tr
-        td FR2885
-        td Kaunas
-        td Edinburgh
-        td Tue, 13 Aug 19
-        td 13:15
-        td 14:05
-      tr
-        td FR2885
-        td Kaunas
-        td Edinburgh
-        td Tue, 13 Aug 19
-        td 13:15
-        td 14:05
-      tr
-        td FR2885
-        td Kaunas
-        td Edinburgh
-        td Tue, 13 Aug 19
-        td 13:15
-        td 14:05
-
+        th
+      each user in data
+        tr
+          td #{user.flightRef}
+          td #{user.from}
+          td #{user.to}
+          td #{user.date}
+          td #{user.departure}
+          td #{user.arrival}
+          td
+            a(href='\#{user.link}') BUY
