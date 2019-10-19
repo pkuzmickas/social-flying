@@ -157,10 +157,14 @@ exports.getEvents = (req, res) => {
   });
   const calendar = google.calendar({version:'v3', auth: authObj});
 
+
+
+
+
   const pugRes = res;
   calendar.events.list({
     calendarId: 'primary',
-    timeMin: (new Date('2019-08-12 12:00:00')).toISOString(),
+    timeMin: (new Date('2019-10-18 00:00:00')).toISOString(),
     maxResults: 10,
     singleEvents: true,
     orderBy: 'startTime',
@@ -201,22 +205,22 @@ exports.getEvents = (req, res) => {
 
 
       // UNCOMMENT THIS IF U WANT FLIGHTS ONLY
-      // if(newEvs.length>0)
-      // events = newEvs;
+      if(newEvs.length>0)
+      events = newEvs;
       //end customizing
 
 
-      pugRes.render('api/calendar', {
-        title: 'Google Calendar API',
-        events
-      });
+      // pugRes.render('api/calendar', {
+      //   title: 'Google Calendar API',
+      //   events
+      // });
 
       // UNCOMMENT THIS IF U WANT FLIGHTS ONLY
-      // pugRes.render('friend', {
-      //   name: 'Paulius Kuzmickas',
-      //   phone: '+447968086419',
-      //   data: events
-      // });
+      pugRes.render('friend', {
+        name: 'Paulius Kuzmickas',
+        phone: '+447968086419',
+        data: events
+      });
 
       
     } else {
