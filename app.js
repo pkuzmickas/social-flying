@@ -159,11 +159,15 @@ app.post('/api/twitter', passportConfig.isAuthenticated, passportConfig.isAuthor
 app.get('/api/upload', lusca({ csrf: true }), apiController.getFileUpload);
 app.post('/api/upload', upload.single('myFile'), lusca({ csrf: true }), apiController.postFileUpload);
 app.get('/api/google/calendar', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getEvents);
+app.get('/api/google/contacts', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getContacts);
 
 /**
  * OAuth authentication routes. (Sign in)
  */
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email', 'https://www.googleapis.com/auth/calendar.readonly'], accessType: 'offline', prompt: 'consent' }));
+
+const GOOGLE_SCOPES = ['profile', 'email', 'https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/contacts']
+
+app.get('/auth/google', passport.authenticate('google', { scope: GOOGLE_SCOPES, accessType: 'offline', prompt: 'consent' }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });

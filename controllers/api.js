@@ -144,6 +144,46 @@ exports.postFileUpload = (req, res) => {
   res.redirect('/api/upload');
 };
 
+exports.getContacts = (req, res) => {
+  const token = req.user.tokens.find((token) => token.kind === 'google');
+  
+  const auth = new google.auth.OAuth2({
+    access_type: 'offline'
+  });
+
+  auth.setCredentials({
+    access_token: token.accessToken
+  });
+
+  const service = google.people({version: 'v1', auth});
+
+  service.people.connections.list({
+    resourceName: 'people/me',
+    // pageSize: 10,
+    personFields: 'names,emailAddresses',
+  }, (err, gres) => {
+    if (err) return console.error('The ctcts API returned an error: ' + err);
+    const connections = gres.data.connections;
+    if (connections) {
+      console.log('Connections:');
+      connections.forEach((person) => {
+        if (person.names && person.names.length > 0) {
+          console.log(person.names[0].displayName);
+        } else {
+          console.log('No display name found for connection.');
+        }
+      });
+      res.render('api/contacts', {
+        title: 'Contacts',
+        contacts: connections.map(c => JSON.stringify(c))
+      });
+    } else {
+      console.log('No connections found.');
+    }
+  });
+
+}
+
 
 exports.getEvents = (req, res) => {
   const token = req.user.tokens.find((token) => token.kind === 'google');
