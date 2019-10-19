@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Arvo&display=swap');
+
+.list_name {
+     font-size: 16px;
+     vertical-align: inherit !important;
+ }
+
+.list_name a {
+    color: inherit;
+}
+
+.pretty-heading {
+    font-size: 120px;
+    font-family: Arvo;
+}
