@@ -24,7 +24,7 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.config({ path: '.env.example' });
+dotenv.config({ path: '.env' });
 
 /**
  * Controllers (route handlers).
@@ -180,6 +180,9 @@ app.get('/api/google/drive', passportConfig.isAuthenticated, passportConfig.isAu
 app.get('/api/chart', apiController.getChart);
 app.get('/api/google/sheets', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getGoogleSheets);
 app.get('/api/quickbooks', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getQuickbooks);
+
+app.get('/api/google-calendar', apiController.getEvents);
+// app.get('/api/google-calendar', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getEvents);
 
 /**
  * OAuth authentication routes. (Sign in)
