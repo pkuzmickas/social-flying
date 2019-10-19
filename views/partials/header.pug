@@ -36,3 +36,12 @@
               li.divider.dropdown-item
               li.dropdown-item
                 a(href='/logout') Logout
+        else
+          style
+            include header.css
+          form(method='POST')
+            input(type='hidden', name='_csrf', value=_csrf)
+            .form-group
+                a.login-button.btn.btn-block.btn-google.btn-social(href='/auth/google')
+                  i.fab.fa-google.fa-xs
+                  | Sign in with Google

@@ -7,13 +7,8 @@ block content
     h1.pretty-heading
       center Social Flying
     hr
-    form(method='POST')
-      input(type='hidden', name='_csrf', value=_csrf)
-      .form-group
-        .offset-md-3.col-md-7.pl-2
-          a.btn.btn-block.btn-google.btn-social(href='/auth/google')
-            i.fab.fa-google.fa-xs
-            | Sign in with Google
+    h5
+      center This is the coolest ever hackathon project and lets you fly with your friends. Yay!!!
   else
     h1 Friends
     p.lead Friends who are using the Social flying app
@@ -29,9 +24,3 @@ block content
               td.list_name
                 a(href='/#' + val.id)
                   p #{val.name}
-
-    //ul
-    //  each val in #{users}
-    //  li = #{val.name}
-
-

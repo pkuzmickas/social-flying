@@ -10,6 +10,17 @@
 }
 
 .pretty-heading {
+
     font-size: 120px;
     font-family: Arvo;
+    width: 500px;
+    margin: 0px auto;
+    margin-top: 60px;
+}
+
+.pretty-sub-heading {
+    font-size: 60px;
+    font-family: Arvo;
+    width: 500px;
+    margin: 0px auto;
 }
