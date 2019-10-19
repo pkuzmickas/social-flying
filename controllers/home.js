@@ -3,22 +3,27 @@
  * Home page.
  */
 exports.index = (req, res) => {
-  res.render('home', {
-    title: 'Home',
-    users: [{
-      name: 'Eion Luca',
-      img_url: 'https://ca.slack-edge.com/TP7BJF3FV-UPJRE3AJC-7594b6e78e3f-72',
-      id: 1
-    },
-    {
-      name: 'Paulius Kuzmickas',
-      img_url: 'https://ca.slack-edge.com/TP7BJF3FV-UPJRE3AJC-7594b6e78e3f-72',
-      id: 2
-    },
-    {
-      name: 'Aditya Dewan',
-      img_url: 'https://ca.slack-edge.com/TP7BJF3FV-UPJRE3AJC-7594b6e78e3f-72',
-      id: 3
-    }]
+  res.render("home", {
+    title: "Home",
+    users: [
+      {
+        name: "Paulius Kuzmickas",
+        photo: "https://ca.slack-edge.com/TP7BJF3FV-UPJRE3AJC-7594b6e78e3f-72",
+        phone: "+447968086419",
+        email: "p.kuzmikas@gmail.com"
+      },
+      {
+        name: "Paulius Kuzmickas",
+        photo: "https://ca.slack-edge.com/TP7BJF3FV-UPJRE3AJC-7594b6e78e3f-72",
+        phone: "+447968086419",
+        email: "p.kuzmikas@gmail.com"
+      },
+      {
+        name: "Paulius Kuzmickas",
+        photo: "https://ca.slack-edge.com/TP7BJF3FV-UPJRE3AJC-7594b6e78e3f-72",
+        phone: "+447968086419",
+        email: "p.kuzmikas@gmail.com"
+      }
+    ]
   });
 };
