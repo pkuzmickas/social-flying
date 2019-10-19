@@ -32,6 +32,7 @@ dotenv.config({ path: '.env' });
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
+const skyscannerController = require('./controllers/skyscanner');
 const contactController = require('./controllers/contact');
 const friendController = require('./controllers/friend');
 
@@ -160,6 +161,7 @@ app.get('/api/upload', lusca({ csrf: true }), apiController.getFileUpload);
 app.post('/api/upload', upload.single('myFile'), lusca({ csrf: true }), apiController.postFileUpload);
 app.get('/api/google/calendar', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getEvents);
 app.get('/api/google/contacts', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getContacts);
+app.get('/api/skyscanner', skyscannerController.getFlights);
 
 /**
  * OAuth authentication routes. (Sign in)
