@@ -4,7 +4,7 @@
  */
 exports.index = (req, res) => {
   res.render("home", {
-    title: "Home",
+    title: "Social Flying",
     users: [
       {
         name: "Paulius Kuzmickas",
