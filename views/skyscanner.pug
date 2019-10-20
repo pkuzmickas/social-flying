@@ -1,6 +1,8 @@
 extends layout
 
 block content
+  style
+    include skyscanner.css
   h1 SkyScanner Results
   - if(flight.itins.length)
     p.lead All available options for your flight! &nbsp;
@@ -15,15 +17,16 @@ block content
     table.table.table-hover
       thead.thead-dark
         tr
-          th Reference
-          th Date
+          th
+          th Agent
           th Price
           th Link
       tbody
         each l in flight.itins[0].PricingOptions
           tr
-            td #{flight.flightRef}
-            td #{flight.outboundDate}
+            td
+              img(src=agents[l.Agents[0]].ImageUrl, class='logo-image')
+            td #{agents[l.Agents[0]].Name}
             td
              a £#{l.Price}
             td
