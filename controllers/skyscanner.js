@@ -8,16 +8,31 @@ const options = {
     }
 };
 
+const defaultParams = {
+    country: 'UK',
+    currency: 'GBP',
+    locale: 'en-GB',
+    locationSchema: 'iata',
+    adults: 1
+};
+
 const pollInterval = 500;
 let pollerObj;
 let timerCleared = false;
 
 exports.getFlights = (req, res) => {
     timerCleared = false;
-    axios.post(url, req.query, options)
+
+    let q = {...defaultParams, ...req.query};
+    q.flightRef = q.flightRef.split(' ')[1];
+    q.originPlace = 'SXF';
+    q.destinationPlace = 'GLA';
+    q.outboundDate = '2019-10-21';
+
+    axios.post(url, q, options)
         .then(response => {
             console.log(response.data);
-            poll(res, response.data, req.query);
+            poll(res, response.data, q);
         })
         .catch(error => {
             console.log('error', 'could not subscribe');
@@ -42,8 +57,12 @@ fetchCurrentStatus = (res, data, query) => {
             if (response.data.Status === 'UpdatesComplete') {
                 clearInterval(pollerObj);
                 timerCleared = true;
-                flight = extractFlight(response.data, query);
-                res.json(flight);
+                let flight = extractFlight(response.data, query);
+                // res.json(flight);
+                res.render('skyscanner', {
+                    title: 'Skyscanner',
+                    flight
+                });
             }
         })
         .catch(err => {
@@ -56,7 +75,6 @@ fetchCurrentStatus = (res, data, query) => {
         });
 }
 
-
 const extractFlight = (data, query) => {
     let { flightRef } = query;
     // let unique = [...new Set(myArray)]; 
@@ -67,7 +85,7 @@ const extractFlight = (data, query) => {
 
     let itins = data.Itineraries
         .filter(({ OutboundLegId }) => oks.includes(OutboundLegId));
-    flight = {...query, query: data.Query, itins};
+    let flight = {...query, query: data.Query, itins};
     return flight;
 }
 

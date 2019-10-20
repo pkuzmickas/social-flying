@@ -16,13 +16,13 @@ block content
         th Arrival
         th
     tbody
-      each user in data
+      each event in events
         tr
-          td #{user.flightRef}
-          td #{user.from}
-          td #{user.to}
-          td #{user.date}
-          td #{user.departure}
-          td #{user.arrival}
+          td #{event.flightRef}
+          td #{event.from}
+          td #{event.to}
+          td #{event.date}
+          td #{event.departure}
+          td #{event.arrival}
           td
-            a(href='\#{user.link}') BUY
+            a(href=event.link) BUY

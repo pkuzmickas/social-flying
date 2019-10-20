@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1 #{name} Skyscanner
+  p.lead (#{phone}) (#{email})
+  hr
+  .table-responsive
+  table.table.table-hover
+    thead.thead-dark
+      tr
+        th Link
+    tbody
+      each l in flight.itins[0].PricingOptions
+        tr
+          - console.log(l)
+          td
+           a(href=l.DeeplinkUrl) BUY
