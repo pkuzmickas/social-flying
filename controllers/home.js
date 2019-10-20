@@ -1,8 +1,31 @@
+const GlobalData = require("../models/GlobalData");
+
 /**
  * GET /
  * Home page.
  */
 exports.index = (req, res) => {
+  
+
+  const gdt = new GlobalData({
+    name: "String",
+    phone: "String",
+    email: "String@",
+    photo: "String",
+    events: []
+  });
+
+  GlobalData.findOne({ phone: "String" }, function(err, obj) {
+    console.log(obj);
+    console.log(err);
+  });
+
+  // GlobalData.findOne({ phone: "String" }, function(err, obj) {
+  //   console.log(obj);
+  //   console.log(err);
+  // });
+
+
   res.render("home", {
     title: "Social Flying",
     users: [
@@ -27,3 +50,5 @@ exports.index = (req, res) => {
     ]
   });
 };
+
+

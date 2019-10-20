@@ -1,4 +1,5 @@
 const passport = require('passport');
+const GlobalData = require('../models/GlobalData');
 const refresh = require('passport-oauth2-refresh');
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: TwitterStrategy } = require('passport-twitter');
@@ -137,6 +138,7 @@ const googleStrategyConfig = new GoogleStrategy({
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || profile._json.picture;
+          console.log("using THIS one1");
           user.save((err) => {
             req.flash('info', { msg: 'Google account has been linked.' });
             done(err, user);
@@ -156,6 +158,7 @@ const googleStrategyConfig = new GoogleStrategy({
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' });
           done(err);
         } else {
+          
           const user = new User();
           user.email = profile.emails[0].value;
           user.google = profile.id;
@@ -168,9 +171,30 @@ const googleStrategyConfig = new GoogleStrategy({
           user.profile.name = profile.displayName;
           user.profile.gender = profile._json.gender;
           user.profile.picture = profile._json.picture;
+
+          GlobalData.findOneAndUpdate({name: null},{
+            name: profile.displayName,
+            email: profile.emails[0].value,
+            photo: profile._json.picture,
+            events: []
+          }, (err, res) => {
+            console.log(res);
+          })
+          // const gData = new GlobalData();
+          // gData.name = profile.displayName;
+          // gData.email = profile.emails[0].value;
+          // gData.photo = profile._json.picture;
+          // gData.events = [];
+
           user.save((err) => {
             done(err, user);
           });
+
+          // gData.save((err)=> {
+          //   done(err, gData);
+          // });
+
+
         }
       });
     });
@@ -220,6 +244,7 @@ exports.isAuthorized = (req, res, next) => {
               });
               req.user = user;
               user.markModified('tokens');
+              console.log("using THIS one3");
               user.save((err) => {
                 if (err) console.log(err);
                 next();

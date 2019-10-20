@@ -18,7 +18,6 @@ const passport = require('passport');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
-
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 /**
@@ -35,6 +34,7 @@ const apiController = require('./controllers/api');
 const skyscannerController = require('./controllers/skyscanner');
 const contactController = require('./controllers/contact');
 const friendController = require('./controllers/friend');
+const friendsController = require('./controllers/friends');
 
 /**
  * API keys and Passport configuration.
@@ -46,13 +46,16 @@ const passportConfig = require('./config/passport');
  */
 const app = express();
 
+
 /**
  * Connect to MongoDB.
  */
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
-mongoose.connect(process.env.MONGODB_URI);
+console.log(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI, (err, db) => {
+});
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
@@ -140,6 +143,7 @@ app.post('/signup', userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 app.get('/friend', friendController.getFriend);
+app.get('/friends', friendsController.getFriends);
 app.get('/account/verify', passportConfig.isAuthenticated, userController.getVerifyEmail);
 app.get('/account/verify/:token', passportConfig.isAuthenticated, userController.getVerifyEmailToken);
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
@@ -171,12 +175,14 @@ const GOOGLE_SCOPES = ['profile', 'email', 'https://www.googleapis.com/auth/cale
 
 app.get('/auth/google', passport.authenticate('google', { scope: GOOGLE_SCOPES, accessType: 'offline', prompt: 'consent' }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect(req.session.returnTo || '/');
+  res.redirect('/api/google/calendar');
 });
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
+
+app.get('/postPhoneNumber', apiController.postPhoneNumber);
 
 /**
  * Error Handler.

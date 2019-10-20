@@ -98,12 +98,21 @@ exports.postSignup = (req, res, next) => {
     password: req.body.password
   });
 
+  const gData = new GlobalData({
+    name: String,
+    phone: String,
+    email: String,
+    photo: String,
+    events: Array
+  });
+  
   User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (err) { return next(err); }
     if (existingUser) {
       req.flash('errors', { msg: 'Account with that email address already exists.' });
       return res.redirect('/signup');
     }
+    console.log("using THIS one4");
     user.save((err) => {
       if (err) { return next(err); }
       req.logIn(user, (err) => {

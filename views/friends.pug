@@ -1,0 +1,30 @@
+extends layout
+
+block content
+    style
+        include home.css
+    h1 Friends
+        p.lead Friends who are using the Social Flying app
+        hr
+        .table-responsive
+        table.table.table-hover
+            thead.thead-dark
+                tr
+                    th.list_name 
+                    th.list_name Name
+                    th.list_name Phone
+                    th.list_name Email
+            tbody
+                each val in data
+                    tr
+                        td
+                            img(src=val.photo class='picture')
+                        td.list_name
+                            a(href='/friend?phone=' + val.phone)
+                                p #{val.name}
+                        td.list_name
+                            a(href='/friend?phone=' + val.phone)
+                                p #{val.phone}
+                        td.list_name
+                            a(href='/friend?phone=' + val.phone)
+                                p #{val.email}   

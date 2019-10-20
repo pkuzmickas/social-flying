@@ -7,8 +7,6 @@ services:
     ports:
      - "8080:8080"
      - "9229:9229"
-    environment:
-     - MONGODB_URI=mongodb://mongo:27017/test 
     links:
      - mongo 
     depends_on: 

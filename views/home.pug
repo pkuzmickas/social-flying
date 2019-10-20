@@ -3,43 +3,59 @@ extends layout
 block content
   style
     include home.css
-  if !user
-    h1.pretty-heading
-      center Social Flying
-    hr
-    form(method='POST')
-      input(type='hidden' name='_csrf', value=_csrf)
-      .form-group.offset-md-4.col-md-4.pl-2
-        a.login-button.btn.btn-block.btn-google.btn-social(href='/auth/google')
+  //- if !user
+  h1.pretty-heading
+    center Social Flying
+  hr
+  script.
+    let saveNumber = async (e) => {
+      let phone = document.getElementById('number').value;
+      // we make the api
+      let res = await fetch('http://localhost:8080/postPhoneNumber?phone=' + phone, {
+        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        //- body: JSON.stringify({phone: phone}),
+        //- headers: { "X-CSRFToken": '!{_csrf}'}
+      });
+      console.log(JSON.stringify(res));
+    }
+  form(method='POST')
+    input(type='hidden' name='_csrf', value=_csrf)
+    .form-group.offset-md-4.col-md-4.pl-2
+      input(type="tel" name="phone" id='number' placeholder='phone number' class='login-button btn btn-block')
+      if !user
+        a.login-button.btn.btn-block.btn-google.btn-social(href='/auth/google' onclick='saveNumber()')
           i.fab.fa-google.fa-xs
           | Sign in with Google
-  else
-    h1 Friends
-    p.lead Friends who are using the Social Flying app
-    hr
-    .table-responsive
-    table.table.table-hover
-      thead.thead-dark
-        tr
-          th.list_name 
-          th.list_name Name
-          th.list_name Phone
-          th.list_name Email
-      tbody
-        each val in users
-          tr
-            td
-              img(src=val.photo)
-            td.list_name
-              a(href='/#')
-                p #{val.name}
-            td.list_name
-              a(href='/#')
-                p #{val.phone}
-            td.list_name
-              a(href='/#')
-                p #{val.email}   
+      else
+        a.login-button.btn.btn-block.btn-google.btn-social(href='/friends' onclick='saveNumber()')
+          i.fab.fa-google.fa-xs
+          | Continue with Google
 
-    //ul
-    //  each val in #{users}
-    //  li = #{val.name}
+  //- else
+
+    //- h1 Friends
+    //- p.lead Friends who are using the Social Flying app
+    //- hr
+    //- .table-responsive
+    //- table.table.table-hover
+    //-   thead.thead-dark
+    //-     tr
+    //-       th.list_name 
+    //-       th.list_name Name
+    //-       th.list_name Phone
+    //-       th.list_name Email
+    //-   tbody
+    //-     each val in users
+    //-       tr
+    //-         td
+    //-           img(src=val.photo)
+    //-         td.list_name
+    //-           a(href='/#')
+    //-             p #{val.name}
+    //-         td.list_name
+    //-           a(href='/#')
+    //-             p #{val.phone}
+    //-         td.list_name
+    //-           a(href='/#')
+    //-             p #{val.email}   
+
