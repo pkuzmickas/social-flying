@@ -75,10 +75,15 @@ fetchCurrentStatus = (res, data, query) => {
                 clearInterval(pollerObj);
                 timerCleared = true;
                 let flight = extractFlight(response.data, query);
+                let carriers = {};
+                response.data.Carriers.forEach( (carrier) => {
+                    carriers[carrier.Id] = carrier;
+                });
                 // res.json(flight);
                 res.render('skyscanner', {
                     title: 'Skyscanner',
-                    flight
+                    flight,
+                    carriers
                 });
             }
         })

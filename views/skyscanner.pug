@@ -2,23 +2,33 @@ extends layout
 
 block content
   h1 SkyScanner Results
-  p.lead All available prices for your flight!
+  - if(flight.itins.length)
+    p.lead All available options for your flight! &nbsp;
+       b !{flight.originPlace.substr(0, 3)}
+       | &nbsp; to &nbsp;
+       b !{flight.destinationPlace.substr(0, 3)}
+       | , &nbsp;
+       b !{flight.outboundDate}
   hr
-  .table-responsive
-  table.table.table-hover
-    thead.thead-dark
-      tr
-        th Reference
-        th Date
-        th Price
-        th Link
-    tbody
-      each l in flight.itins[0].PricingOptions
+  - if(flight.itins.length)
+    .table-responsive
+    table.table.table-hover
+      thead.thead-dark
         tr
-          td #{flight.flightRef}
-          td #{flight.outboundDate}
-          td
-           a £#{l.Price}
-          td
-           a(href=l.DeeplinkUrl) BUY FLIGHT
+          th Reference
+          th Date
+          th Price
+          th Link
+      tbody
+        each l in flight.itins[0].PricingOptions
+          tr
+            td #{flight.flightRef}
+            td #{flight.outboundDate}
+            td
+             a £#{l.Price}
+            td
+             a(href=l.DeeplinkUrl) BUY FLIGHT
+  - if (flight.itins.length == 0)
+    h3
+      center No seats available for this flight
            
