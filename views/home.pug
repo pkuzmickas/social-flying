@@ -21,8 +21,8 @@ block content
   form(method='POST')
     input(type='hidden' name='_csrf', value=_csrf)
     .form-group.offset-md-4.col-md-4.pl-2
-      input(type="tel" name="phone" id='number' placeholder='phone number' class='login-button btn btn-block')
       if !user
+        input(type="tel" name="phone" id='number' placeholder='phone number' class='login-button btn btn-block')
         a.login-button.btn.btn-block.btn-google.btn-social(href='/auth/google' onclick='saveNumber()')
           i.fab.fa-google.fa-xs
           | Sign in with Google
