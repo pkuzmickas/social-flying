@@ -226,7 +226,7 @@ exports.getEvents = (req, res) => {
   calendar.events.list(
     {
       calendarId: "primary",
-      timeMin: new Date("2019-08-12 00:00:00").toISOString(),
+      timeMin: new Date().toISOString(),
       maxResults: 100,
       singleEvents: true,
       orderBy: "startTime"

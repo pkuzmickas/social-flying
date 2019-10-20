@@ -1,7 +1,10 @@
 const axios = require('axios');
 
 const SKYSCANNER_KEY = process.env.SKYSCANNER_KEY;
-const url = 'https://www.skyscanner.net/g/chiron/api/v1/flights/search/pricing/v1.0';
+
+const rootUrl = 'https://www.skyscanner.net/g/chiron/api/v1'
+const url = rootUrl + '/flights/search/pricing/v1.0';
+
 const options = {
     headers: {
         'api-key': SKYSCANNER_KEY
@@ -20,28 +23,40 @@ const pollInterval = 500;
 let pollerObj;
 let timerCleared = false;
 
+const f = (url, q, key) => {
+    const u = url + q[key];
+    return axios.get(u, options)
+        .then(response => {
+            const { Places } = response.data;
+            if (Places && Places.length > 0) {
+                q[key] = Places[0].CityId;
+            }
+        })
+        .catch(err => {
+            console.log('failed to to destination place')
+        });
+};
+
 exports.getFlights = (req, res) => {
     timerCleared = false;
 
-    let q = {...defaultParams, ...req.query};
+    let q = { ...defaultParams, ...req.query };
     q.flightRef = q.flightRef.split(' ')[1];
-    // todo fix places names
-    q.originPlace = 'SXF';
-    q.destinationPlace = 'GLA';
-    // todo remove 
-    // q.outboundDate = '2019-10-21';
+    const placeUrl = rootUrl + `/places/autosuggest/v1.0/${defaultParams.country}/${defaultParams.currency}/${defaultParams.locale}?query=`;
 
-    axios.post(url, q, options)
-        .then(response => {
-            console.log(response.data);
-            poll(res, response.data, q);
-        })
-        .catch(error => {
-            console.log('error', 'could not subscribe');
-            res.status(500).send({ error });
+    Promise.all([f(placeUrl, q, 'originPlace'),
+    f(placeUrl, q, 'destinationPlace')])
+        .then(values => {
+            axios.post(url, q, options)
+                .then(response => {
+                    poll(res, response.data, q);
+                })
+                .catch(error => {
+                    console.log('error', 'could not subscribe');
+                    res.status(500).send({ error });
+                });
         });
 }
-
 
 poll = (ogRes, data, query) => {
     pollerObj = setInterval(() => { fetchCurrentStatus(ogRes, data, query) }, pollInterval);
@@ -87,7 +102,7 @@ const extractFlight = (data, query) => {
 
     let itins = data.Itineraries
         .filter(({ OutboundLegId }) => oks.includes(OutboundLegId));
-    let flight = {...query, query: data.Query, itins};
+    let flight = { ...query, query: data.Query, itins };
     return flight;
 }
 
