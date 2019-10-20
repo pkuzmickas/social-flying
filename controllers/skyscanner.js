@@ -25,9 +25,11 @@ exports.getFlights = (req, res) => {
 
     let q = {...defaultParams, ...req.query};
     q.flightRef = q.flightRef.split(' ')[1];
+    // todo fix places names
     q.originPlace = 'SXF';
     q.destinationPlace = 'GLA';
-    q.outboundDate = '2019-10-21';
+    // todo remove 
+    // q.outboundDate = '2019-10-21';
 
     axios.post(url, q, options)
         .then(response => {
