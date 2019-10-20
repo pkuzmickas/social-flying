@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1 #{name} Flights
-  p.lead (#{phone}) (#{email})
+  p.lead #{phone}, #{email}
   hr
   .table-responsive
   table.table.table-hover
@@ -25,4 +25,4 @@ block content
           td #{event.departure}
           td #{event.arrival}
           td
-            a(href=event.link) BUY
+            a(href=event.link) FIND
