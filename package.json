@@ -22,7 +22,7 @@
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@ladjs/bootstrap-social": "^7.0.2",
     "@octokit/rest": "^16.33.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.3.1",
