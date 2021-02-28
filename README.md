@@ -1,10 +1,9 @@
-# Social flying
+# Social Flying
 
-## todo:
+2019 Glasgow University Hackathon Project.
 
-- [ ] display airline
-- [ ] strategy to select prices
-- [ ] change color (css)
-- [ ] don't show your own
-- [ ] clear db for logged used right after he goes on /
-- [ ] replace dumb 1 spaces check with \\w+
+Signup using Google, provide access to your Calendar and see what kind of flights you and your friends have upcoming in the near future.
+
+Then, click on them, and using Skyscanner APIs we'll redirect you to the cheapest deal to get the same flight.
+
+Fly socially.
